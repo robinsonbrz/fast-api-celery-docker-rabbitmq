@@ -1,0 +1,8 @@
+POSTGRES_DB=fastapirob
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+
+RABBITMQ_DEFAULT_USER=guest
+RABBITMQ_DEFAULT_PASS=guest
+FASTAPIROB_DB_URI="postgresql://postgres:postgres@db:5432/${FASTAPIROB_DB:-fastapirob}"
+FASTAPIROB_DB_CONNECT_ARGS="{}"

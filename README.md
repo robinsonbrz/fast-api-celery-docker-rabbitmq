@@ -12,3 +12,12 @@ docker exec -it celery celery -A core.celery.celery worker -l info
 
 
 docker exec -it flower celery -A src.core.celery.celery flower --broker=amqp://guest:guest@rabbit:5672//
+
+
+http://localhost:8000/docs#/
+
+Flower
+http://localhost:5555/
+
+
+

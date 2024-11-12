@@ -14,10 +14,3 @@ RUN pip install -r requirements.txt
 RUN pip install flower
 
 RUN chown -R app:app $APP_HOME
-# RUN echo
-# RUN echo
-# RUN echo
-# RUN echo
-# RUN echo $RABBITMQ_DEFAULT_DEFAULT_USER
-
-# RUN command: ["celery", "-A", "core.celery.celery", "flower", "--broker=amqp://{$RABBITMQ_DEFAULT_DEFAULT_USER}:{$RABBITMQ_DEFAULT_DEFAULT_PASS}@rabbit:5672//"]

@@ -1,16 +1,6 @@
-from fastapi import FastAPI
 from api import router
 
+from core.config import settings
+from core.setup import create_application
 
-# from .core.setup import create_application
-
-# app = create_application(router=router, settings=settings)
-
-app = FastAPI(
-    title="Fast API Robinson",
-    version="0.1.0",
-    description="Fast API Robinson",
-)
-
-
-app.include_router(router)
+app = create_application(router=router, settings=settings)

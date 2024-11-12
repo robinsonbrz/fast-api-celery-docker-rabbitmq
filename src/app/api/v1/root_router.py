@@ -15,7 +15,6 @@ async def health_check():
 @router.get("/test-db")
 async def test_db_connection(*, session: Session = ActiveSession):
     try:
-        # Execute a simple query
         result = session.execute("SELECT 1")
         return {"status": "Connected", "result": result.scalar()}
     except Exception as e:
@@ -25,6 +24,5 @@ async def test_db_connection(*, session: Session = ActiveSession):
 async def send_email(*, session: Session = ActiveSession):
     # Submitting a task
     send_mail_task.apply_async(args=("parametro-01", "parametro-02"))
-    
     us = {"email":"sent"}
     return us

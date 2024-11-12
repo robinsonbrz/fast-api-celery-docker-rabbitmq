@@ -1,8 +1,9 @@
 version: '3.9'
 
 services:
-  api:
-    container_name: api
+  fast-api-api:
+    container_name: fast-api-api
+    image: fast-api-api
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -11,13 +12,14 @@ services:
     volumes:
       - ./src/app:/home/app
     depends_on:
-      - db
-    # stdin_open: true
+      - fast-api-db
+    env_file:
+      - ./.env
     # tty: true
-    command: ["uvicorn","main:app","--host=0.0.0.0","--port=8000","--reload"]
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
-  db:
-    container_name: db
+  fast-api-db:
+    container_name: fast-api-db
     image: postgres:13-alpine
     volumes:
       - fastapirob_data:/var/lib/postgresql/data/
@@ -27,16 +29,48 @@ services:
     env_file:
       - ./.env
 
-
-  rabbit:
-    container_name: rabbit
+  fast-api-rabbit:
+    container_name: fast-api-rabbit
     image: rabbitmq:3.11.10-management 
     ports:
         - 5675:5672
         - 15672:15672
-    environment:
-        - RABBITMQ_DEFAULT_USER=guest
-        - RABBITMQ_DEFAULT_PASS=guest
+    env_file:
+      - ./.env
+
+  fast-api-celery:
+    container_name: fast-api-celery
+    image: fast-api-celery
+    env_file:
+      - ./.env
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./src/app:/home/app
+    # tty: true
+    command: celery -A core.celery.celery worker -l info
+
+    depends_on:
+      - fast-api-rabbit
+      - fast-api-api
+
+  fast-api-flower:
+    container_name: fast-api-flower
+    image: fast-api-flower
+    build:
+      context: .
+      dockerfile: Dockerfile.flower
+    volumes:
+      - ./src/app:/home/app
+    env_file:
+      - ./.env
+    command: ["celery", "-A", "core.celery.celery", "flower", "--broker=amqp://$RABBITMQ_DEFAULT_USER:$RABBITMQ_DEFAULT_PASS@$RABBITMQ_DEFAULT_HOST:5672//"]
+
+    ports:
+        - 5555:5555
+    depends_on:
+        - fast-api-rabbit
 
 volumes:
   fastapirob_data:

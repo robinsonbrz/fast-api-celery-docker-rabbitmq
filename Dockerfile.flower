@@ -4,12 +4,20 @@ RUN mkdir -p /home/app
 
 RUN groupadd app && useradd -g app app
 
-ENV APP_HOME=/home/app/api
+ENV APP_HOME=/home/app
 RUN mkdir -p $APP_HOME
 WORKDIR $APP_HOME
 
-COPY . $APP_HOME
+COPY requirements.txt $APP_HOME
 RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 RUN pip install flower
 
 RUN chown -R app:app $APP_HOME
+# RUN echo
+# RUN echo
+# RUN echo
+# RUN echo
+# RUN echo $RABBITMQ_DEFAULT_DEFAULT_USER
+
+# RUN command: ["celery", "-A", "core.celery.celery", "flower", "--broker=amqp://{$RABBITMQ_DEFAULT_DEFAULT_USER}:{$RABBITMQ_DEFAULT_DEFAULT_PASS}@rabbit:5672//"]

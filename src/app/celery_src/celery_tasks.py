@@ -1,7 +1,7 @@
 import asyncio
 from time import sleep
 from datetime import datetime
-from core.celery.celery  import celery_app
+from celery_src.main_celery import celery_app
 
 
 @celery_app.task

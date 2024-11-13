@@ -49,7 +49,7 @@ services:
     volumes:
       - ./src/app:/home/app
     # tty: true
-    command: celery -A core.celery.celery worker -l info
+    command: celery -A celery_src.main_celery worker -l info
 
     depends_on:
       - fast-api-rabbit
@@ -65,7 +65,8 @@ services:
       - ./src/app:/home/app
     env_file:
       - ./.env
-    command: ["celery", "-A", "core.celery.celery", "flower", "--broker=amqp://$RABBITMQ_DEFAULT_USER:$RABBITMQ_DEFAULT_PASS@$RABBITMQ_DEFAULT_HOST:5672//"]
+    # tty: true
+    command: ["celery", "-A", "celery_src.main_celery", "flower", "--broker=amqp://$RABBITMQ_DEFAULT_USER:$RABBITMQ_DEFAULT_PASS@$RABBITMQ_DEFAULT_HOST:5672//"]
 
     ports:
         - 5555:5555

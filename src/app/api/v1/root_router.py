@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from core.db import ActiveSession
 from sqlmodel import Session
 
-from core.celery.celery_tasks import send_mail_task
+from celery_src.celery_tasks import send_mail_task
 
 router = APIRouter()
 
